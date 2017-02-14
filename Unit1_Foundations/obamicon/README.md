@@ -1,13 +1,9 @@
 # Obamicon
 
 To run on Mac:
-'''
-$ python3 obamicon.py
-'''
+`$ python3 obamicon.py`
 
 To run on Windows:
-'''
-$ python obamicon.py
-'''
+`$ python obamicon.py`
 
 This program will create a new image called "recolored.jpg" in the current directory.
