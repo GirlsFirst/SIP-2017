@@ -16,43 +16,55 @@ window.onload = init;
 
 function checkPassword() {
   // Get user-entered password from input box
-  var pw = document.getElementById("pw").value;
-  var pwsToCheck = [pw];
-  console.log(pwsToCheck);
+  var pw = document.getElementById("pw").value.toLowerCase();
+  if (pw) {
+    pw = getVariations(pw); // Convert any letter-to-number substitutions
 
-  // If this gets set to true, then the password variant was found
-  //   in the dicitonary word list, and this isn't a secure password
-  var isSecure = true;
-  var matchingWord = "";
+    // If this gets set to true, then the password variant was found
+    //   in the dicitonary word list, and this isn't a secure password
+    var isSecure = true;
+    var matchingWord = "";
 
-  // Make a list of alternate versions of the string to check
+    // Make a list of alternate versions of the string to check
 
-  // Iterate over the list of words to see if any of the password variations
-  //   are contained in the dictionary word list
-  for (var i = 0; i < wordsList.length; i++) { // for each word in the dictionary
-    for (var j = 0; j < pwsToCheck.length; j++) { // for each password variation
+    // Iterate over the list of words to see if the password is contained
+    //   in the dictionary word list
+    for (var i = 0; i < wordsList.length; i++) {
       // If the password variation matches the dictionary word, it's not a secure password
-      if (wordsList[i] == pwsToCheck[j]) {
+      if (wordsList[i] == pw) {
         isSecure = false;
         matchingWord = wordsList[i];
         break;
       }
-    } // end for each password variant
-  } // end for each word in the dictionary
+    }
 
-  printResults(isSecure, matchingWord);
-
+    printResults(isSecure, matchingWord);
+  }
 }
 
 function getVariations(pw) {
-  return [pw];
+  // Check and convert common letter-to-number substitutions
+  //   (e.g. "3" -> "e", "4" -> "a")
+  pw = pw.replace(/[1!]/g, "i");
+  pw = pw.replace(/2/g, "z");
+  pw = pw.replace(/3/g, "e");
+  pw = pw.replace(/[@4]/g, "a");
+  pw = pw.replace(/[$5]/g, "s");
+  pw = pw.replace(/[69]/g, "g");
+  pw = pw.replace(/7/g, "t");
+  pw = pw.replace(/8/g, "b");
+  pw = pw.replace(/0/g, "o");
+
+  return pw;
 }
 
 function printResults(isSecure, word) {
   if (isSecure) {
+    document.getElementById("results").style.color = "#01426a";
     document.getElementById("results").innerHTML = "No match found. This password is secure against dictionary attacks!";
   }
   else {
+    document.getElementById("results").style.color = "#f4364c";
     var resultsStr = "That's not a secure password! This password matched the word \"" + word + "\" in the dictionary.";
     document.getElementById("results").innerHTML = resultsStr;
   }
